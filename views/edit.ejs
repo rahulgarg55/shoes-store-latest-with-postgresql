@@ -1,0 +1,11 @@
+<h1>Edit <%= product.name %></h1>
+<form action="/<%= product.id %>/edit?_method=PUT" method="POST">
+    <label for="name" style="color: white;">Brand Name</label>
+    <input type="text" id="name" name="name" value="<%= product.name %>">
+    <label for="image" style="color: white;">Shoes Image</label>
+    <input type="text" id="image" name="image" value="<%= product.image %>">
+    <label for="price" style="color: white;">Shoes Price</label>
+    <input type="number" id="price" name="price" value="<%= product.price %>">
+    <input type="submit">
+</form>
+<a href="/">GO BACK</a>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAPPY FEET STORE</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <style>
+        body {
+            background-image: url("https://images.unsplash.com/photo-1687223607690-a177488e6a77?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw3fHx8ZW58MHx8fHx8&auto=format&fit=crop&w=500&q=60");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        .header {
+            display: flex;
+            align-items: auto;
+            justify-content: space-between;
+            padding: 20px;
+            background-color: #fff;
+            color: #000;
+            font-size: 40px;
+            text-shadow: #333;
+            font-weight: bold;
+        }
+        .search-bar {
+            width: 300px;
+            height: 40px;
+            border: none;
+            padding: 5px;
+            font-size: 18px;
+        }
+        .search-button {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .search-button:hover {
+            background-color: #0056b3;
+        }
+   
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="title">Shoes Feet Store</div>
+        <div class="logo">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4EQ-3sH8o3A6RKsuU0fa2-f9pfx39bjRQFg&usqp=CAU" style="width: 200px; height: 50px;">
+        </div>
+        <form action="/search" method="GET">
+            <input type="text" class="search-bar" name="query" placeholder="Search...">
+            <button type="submit" class="search-button">Search</button>
+        </form>
+    </div>
+    <br>
+    <br>
+    <hr>
+    <section class="show">
+        <table class="table">
+            <tr>
+                <th style="color: white;">Brand Name</th>
+                <th style="color: white;">Shoes Image</th>
+                <th style="color: white;">Shoes Price</th>
+            </tr>
+            <% shoes.forEach(function(product){ %>
+                 <tr>
+                    <td><h4 style="color: white;"><%= product.name %></h4></td>
+                    <td><img src="<%= product.image %>" alt="" style="width: 100px;height: 100px;"></td>
+                    <td><h5 style="color: white;"><%= product.price %></h5></td>
+                    <td><a class="btn btn-warning" href="/shoesstore/<%= product.id %>/edit">EDIT</a></td>
+                    <td>
+                        <form action="/shoesstore/<%= product.id %>?_method=DELETE" method="POST">
+                            <button class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            <% }) %>
+        </table>
+        
+        <% if (pages > 1) { %>
+            <ul class="pagination">
+              <% if (pageNumber > 1) { %>
+                <li class="page-item">
+                  <a class="page-link" href="/shoesstore/?page=<%= pageNumber - 1 %>">&laquo;</a>
+                </li>
+              <% } %>
+              <% for (let i = 1; i <= pages; i++) { %>
+                <li class="page-item <%= (i === pageNumber) ? 'active' : '' %>">
+                  <a class="page-link" href="/shoesstore/?page=<%= i %>"><%= i %></a>
+                </li>
+              <% } %>
+              <% if (pageNumber < pages) { %>
+                <li class="page-item">
+                  <a class="page-link" href="/shoesstore/?page=<%= pageNumber + 1 %>">&raquo;</a>
+                </li>
+              <% } %>
+            </ul>
+          <% } %>
+    </section>
+</body>
+</html>
