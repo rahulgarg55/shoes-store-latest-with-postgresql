@@ -1,0 +1,29 @@
+<div id="cart-items">
+    <% cartItems.forEach(function(shoe) { %>
+      <div class="cart-item">
+        <img src="<%= shoe.image %>" alt="<%= shoe.name %>">
+        <div>
+          <h5><%= shoe.name %></h5>
+          <p><%= shoe.price %></p>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+  
+  <script>
+    function addToCart(shoeId) {
+      fetch(`/${shoeId}/add-to-cart`, { method: 'POST' })
+        .then(function(response) {
+          if (response.ok) {
+            // Refresh the cart items on the page
+            location.reload();
+          } else {
+            throw new Error('Failed to add item to cart');
+          }
+        })
+        .catch(function(error) {
+          console.error('Error adding item to cart:', error);
+        });
+    }
+  </script>
+  

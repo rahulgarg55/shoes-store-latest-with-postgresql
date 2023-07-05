@@ -1,27 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HAPPY FEET STORE</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <style>
-        body {
-            background-image: url("https://images.unsplash.com/photo-1687223607690-a177488e6a77?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw3fHx8ZW58MHx8fHx8&auto=format&fit=crop&w=500&q=60");
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
         .header {
             display: flex;
-            align-items: auto;
-            justify-content: space-between;
+            align-items: center;
+            justify-content: space-around;
             padding: 20px;
-            background-color: #fff;
-            color: #000;
+            background-color: rgb(0, 0, 0);
+            color: white;
             font-size: 40px;
             text-shadow: #333;
             font-weight: bold;
         }
+
         .search-bar {
             width: 300px;
             height: 40px;
@@ -29,6 +26,7 @@
             padding: 5px;
             font-size: 18px;
         }
+
         .search-button {
             padding: 5px 10px;
             background-color: #007bff;
@@ -37,67 +35,117 @@
             cursor: pointer;
             font-size: 16px;
         }
+
+        .cart-icon {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+        }
+
+        .cart-icon svg {
+            width: 24px;
+            height: 24px;
+            margin-right: 5px;
+        }
+
+        .new-arrivals {
+            margin-top: 10px;
+            margin-bottom: -50px;
+        }
+
         .search-button:hover {
             background-color: #0056b3;
         }
-   
+
+        .edit-delete-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .edit-delete-buttons a {
+            text-decoration: none;
+            margin-right: 10px;
+        }
     </style>
 </head>
+
 <body>
     <div class="header">
-        <div class="title">Shoes Feet Store</div>
+        <div class="title">Happy Feet Store</div>
         <div class="logo">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4EQ-3sH8o3A6RKsuU0fa2-f9pfx39bjRQFg&usqp=CAU" style="width: 200px; height: 50px;">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4EQ-3sH8o3A6RKsuU0fa2-f9pfx39bjRQFg&usqp=CAU" style="width: 100px; height: 90px;">
         </div>
-        <form action="/search" method="GET">
-            <input type="text" class="search-bar" name="query" placeholder="Search...">
-            <button type="submit" class="search-button">Search</button>
+        <form action="/search" method="GET" class="d-flex">
+            <input type="text" class="form-control mr-2" name="query" placeholder="Search...">
+            <button type="submit" class="btn btn-primary">Search</button>
+            <a href="/cart" class="cart-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                </svg>
+            </a>
         </form>
     </div>
+    <h2 class="new-arrivals" style="font-weight: bold; text-align: left;margin-top:0;">New Arrivals</h2>
     <br>
     <br>
     <hr>
     <section class="show">
-        <table class="table">
-            <tr>
-                <th style="color: white;">Brand Name</th>
-                <th style="color: white;">Shoes Image</th>
-                <th style="color: white;">Shoes Price</th>
-            </tr>
+        <div class="row">
             <% shoes.forEach(function(product){ %>
-                 <tr>
-                    <td><h4 style="color: white;"><%= product.name %></h4></td>
-                    <td><img src="<%= product.image %>" alt="" style="width: 100px;height: 100px;"></td>
-                    <td><h5 style="color: white;"><%= product.price %></h5></td>
-                    <td><a class="btn btn-warning" href="/shoesstore/<%= product.id %>/edit">EDIT</a></td>
-                    <td>
-                        <form action="/shoesstore/<%= product.id %>?_method=DELETE" method="POST">
-                            <button class="btn btn-danger">Delete</button>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <a href="/<%= product.id %>/edit">
+                        <img src="<%= product.image %>" class="card-img-top" alt="Shoes Image">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title"><%= product.name %></h5>
+                        <p class="card-text"><%= product.price %></p>
+                        <p class="card-text"><%= product.description %></p>
+                        <form action="/<%= product.id %>/add-to-cart" method="POST" style="display: inline;">
+                            <button class="btn btn-primary">Add to Cart</button>
                         </form>
-                    </td>
-                </tr>
+                    </div>
+                    <div class="edit-delete-buttons">
+                        <a href="/<%= product.id %>/edit" class="btn btn-primary btn-sm">Edit</a>
+                        <form action="/<%= product.id %>/delete" method="POST" style="display: inline;">
+                            <button class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
             <% }) %>
-        </table>
-        
+
+        </div>
+
         <% if (pages > 1) { %>
-            <ul class="pagination">
-              <% if (pageNumber > 1) { %>
-                <li class="page-item">
-                  <a class="page-link" href="/shoesstore/?page=<%= pageNumber - 1 %>">&laquo;</a>
-                </li>
-              <% } %>
-              <% for (let i = 1; i <= pages; i++) { %>
-                <li class="page-item <%= (i === pageNumber) ? 'active' : '' %>">
-                  <a class="page-link" href="/shoesstore/?page=<%= i %>"><%= i %></a>
-                </li>
-              <% } %>
-              <% if (pageNumber < pages) { %>
-                <li class="page-item">
-                  <a class="page-link" href="/shoesstore/?page=<%= pageNumber + 1 %>">&raquo;</a>
-                </li>
-              <% } %>
-            </ul>
-          <% } %>
+        <ul class="pagination">
+            <% if (pageNumber > 1) { %>
+            <li class="page-item">
+                <a class="page-link" href="/?page=<%= pageNumber - 1 %>">&laquo;</a>
+            </li>
+            <% } %>
+            <% for (let i = 1; i <= pages; i++) { %>
+            <li class="page-item <%= (i === pageNumber) ? 'active' : '' %>">
+                <a class="page-link" href="/?page=<%= i %>"><%= i %></a>
+            </li>
+            <% } %>
+            <% if (pageNumber < pages) { %>
+            <li class="page-item">
+                <a class="page-link" href="/?page=<%= pageNumber + 1 %>">&raquo;</a>
+            </li>
+            <% } %>
+        </ul>
+        <% } %>
     </section>
+
+    <script>
+        document.querySelector('.cart-icon').addEventListener('click', () => {
+            window.location.href = '/cart'; // Navigate to the cart page
+        });
+    </script>
 </body>
+
 </html>

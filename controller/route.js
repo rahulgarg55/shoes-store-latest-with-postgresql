@@ -1,7 +1,7 @@
 app.get("/shoesstore", (req, res) => {
   const pageNumber = parseInt(req.query.page) || 1;
-  const pageSize = 10;
-
+  const pageSize = 3;
+  
   shoes.findAndCountAll({
     offset: (pageNumber - 1) * pageSize,
     limit: pageSize,
