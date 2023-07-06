@@ -69,6 +69,13 @@
             text-decoration: none;
             margin-right: 10px;
         }
+        .checkout-icon{
+            margin-left:10px;
+            /* display:flex; */
+            color:white;
+            padding-left:15px;
+        }
+      
     </style>
 </head>
 
@@ -86,9 +93,14 @@
                     <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
                 </svg>
             </a>
+                <a href="/checkout-page" class="checkout-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-basket" viewBox="0 0 16 16">
+                <path d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1v4.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 13.5V9a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h1.217L5.07 1.243a.5.5 0 0 1 .686-.172zM2 9v4.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V9H2zM1 7v1h14V7H1zm3 3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 4 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 6 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 8 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5z"/>
+              </svg>
+                </a>
         </form>
     </div>
-    <h2 class="new-arrivals" style="font-weight: bold; text-align: left;margin-top:0;">New Arrivals</h2>
+    <h2 class="new-arrivals" style="font-weight: bold; text-align: left; margin-top: 7px;">New Arrivals</h2>
     <br>
     <br>
     <hr>
@@ -111,13 +123,13 @@
                     <div class="edit-delete-buttons">
                         <a href="/<%= product.id %>/edit" class="btn btn-primary btn-sm">Edit</a>
                         <form action="/<%= product.id %>/delete" method="POST" style="display: inline;">
-                            <button class="btn btn-danger btn-sm">Delete</button>
+                          <input type="hidden" name="_method" value="DELETE">
+                          <button class="btn btn-danger btn-sm">Delete</button>
                         </form>
-                    </div>
+                      </div>                      
                 </div>
             </div>
             <% }) %>
-
         </div>
 
         <% if (pages > 1) { %>
@@ -143,7 +155,7 @@
 
     <script>
         document.querySelector('.cart-icon').addEventListener('click', () => {
-            window.location.href = '/cart'; // Navigate to the cart page
+            window.location.href = '/cart';  //event listener concept
         });
     </script>
 </body>

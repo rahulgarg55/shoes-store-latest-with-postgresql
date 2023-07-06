@@ -1,0 +1,73 @@
+<!-- checkout.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container mt-4">
+        <h2 class="mb-4">Checkout</h2>
+        <% if (cartItems.length > 0) { %>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Product</th>
+                <th scope="col">Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% cartItems.forEach(function(item) { %>
+                <tr>
+                  <td><%= item.name %></td>
+                  <td><%= item.price %></td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        <% } else { %>
+          <p>No items in the cart.</p>
+        <% } %>
+
+        <% if (cartItems.length > 0) { %>
+          <div class="total-amount mt-4">
+            <h5>Total Amount: <%= totalAmount %></h5>
+          </div>
+        <% } %>
+
+        <form action="/process-payment" method="POST">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="address">Address</label>
+                <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="card-number">Card Number</label>
+                <input type="text" class="form-control" id="card-number" name="cardNumber" required>
+            </div>
+            <div class="form-group">
+                <label for="expiration-date">Expiration Date</label>
+                <input type="text" class="form-control" id="expiration-date" name="expirationDate" required>
+            </div>
+            <div class="form-group">
+                <label for="cvv">CVV</label>
+                <input type="text" class="form-control" id="cvv" name="cvv" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Payment</button>
+        </form>
+    </div>
+</body>
+
+</html>

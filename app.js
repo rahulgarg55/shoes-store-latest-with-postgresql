@@ -34,16 +34,16 @@ const Shoe = sequelize.define(
       allowNull: false,
     },
     price: {
-      type: DataTypes.FLOAT,
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
-    createdat: {
+    createdAt: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
       field: "createdat",
     },
-    updatedat: {
+    updatedAt: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
@@ -67,11 +67,30 @@ app.use(
     saveUninitialized: true,
   })
 );
-
-// Middleware to initialize cartItems array
 app.use((req, res, next) => {
   req.session.cartItems = req.session.cartItems || [];
   next();
+});
+app.get("/search", (req, res) => {
+  const query = req.query.query;
+  Shoe.findAll({
+    where: {
+      name: {
+        [Sequelize.Op.like]: `%${query}%`,
+      },
+    },
+  })
+    .then((results) => {
+      res.render("search", {
+        results,
+        query,
+        cartItems: req.session.cartItems || [],
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.redirect("/");
+    });
 });
 
 app.post("/:id/add-to-cart", (req, res) => {
@@ -82,10 +101,8 @@ app.post("/:id/add-to-cart", (req, res) => {
         const cartItems = req.session.cartItems || [];
         cartItems.push(shoe);
         req.session.cartItems = cartItems;
-        res.sendStatus(200);
-      } else {
-        res.sendStatus(404);
       }
+      res.redirect("/cart"); // Redirect to the cart page
     })
     .catch((err) => {
       console.log(err);
@@ -93,14 +110,12 @@ app.post("/:id/add-to-cart", (req, res) => {
     });
 });
 
-
-// Render the cart page
 app.get("/cart", (req, res) => {
-  console.log(req.session.cartItems); // Log the cartItems array
+  console.log(req.session.cartItems);
   res.render("cart", { cartItems: req.session.cartItems || [] });
+  // res.redirect("/");
 });
 
-// Remove an item from the cart
 app.delete("/cart/:id", (req, res) => {
   const shoeId = req.params.id;
   const cartItems = req.session.cartItems || [];
@@ -114,7 +129,6 @@ app.delete("/cart/:id", (req, res) => {
   res.redirect("/cart");
 });
 
-// Render the edit page
 app.get("/:id/edit", (req, res) => {
   Shoe.findByPk(req.params.id)
     .then((shoe) => {
@@ -126,7 +140,6 @@ app.get("/:id/edit", (req, res) => {
     });
 });
 
-// Update a shoe
 app.put("/:id/edit", (req, res) => {
   Shoe.update(req.body, {
     where: { id: req.params.id },
@@ -140,10 +153,10 @@ app.put("/:id/edit", (req, res) => {
     });
 });
 
-// Delete a shoe
-app.delete("/:id", (req, res) => {
+app.delete("/:id/delete", (req, res) => {
+  const shoeId = req.params.id;
   Shoe.destroy({
-    where: { id: req.params.id },
+    where: { id: shoeId },
   })
     .then(() => {
       res.redirect("/");
@@ -154,13 +167,20 @@ app.delete("/:id", (req, res) => {
     });
 });
 
-// Render the home page
+app.get("/checkout-page", (req, res) => {
+  const cartItems = req.session.cartItems || [];
+  let totalAmount = 0;
+  cartItems.forEach((item) => {
+    totalAmount += item.price;
+  });
+  res.render("checkout", { cartItems, totalAmount });
+});
 app.get("/", (req, res) => {
   const pageNumber = req.query.page || 1;
   const pageSize = 3;
 
   Shoe.findAndCountAll({
-    attributes: ["id", "name", "image", "price", "createdat", "updatedat"],
+    attributes: ["id", "name", "image", "price", "createdAt", "updatedAt"],
     offset: (pageNumber - 1) * pageSize,
     limit: pageSize,
   })

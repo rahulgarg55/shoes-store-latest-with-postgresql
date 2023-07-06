@@ -5,26 +5,45 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cart</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <style>
+    .card {
+      width: 300px;
+      margin-right: 10px;
+    }
+
+    .card-img {
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .container {
+      margin-top: 50px;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
     <h2>Cart</h2>
     <% if (cartItems.length > 0) { %>
-      <% cartItems.forEach(function(item) { %>
-        <div class="card mb-3">
-          <div class="row no-gutters">
-            <div class="col-md-4">
-              <img src="<%= item.image %>" class="card-img" alt="<%= item.name %>">
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <h5 class="card-title"><%= item.name %></h5>
-                <p class="card-text">Price: $<%= item.price %></p>
+      <div class="row">
+        <% cartItems.forEach(function(item) { %>
+          <div class="col-md-4 mb-4">
+            <div class="card">
+              <div class="row no-gutters">
+                <div class="col-md-4">
+                  <img src="<%= item.image %>" class="card-img" alt="<%= item.name %>">
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title"><%= item.name %></h5>
+                    <p class="card-text">Price: $<%= item.price %></p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      <% }) %>
+        <% }) %>
+      </div>
     <% } else { %>
       <p>No items in the cart.</p>
     <% } %>
