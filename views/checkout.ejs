@@ -1,5 +1,3 @@
-<!-- checkout.ejs -->
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,6 +6,72 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout Page</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+
+    <style>
+        .container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+table {
+  width: 100%;
+  margin-bottom: 20px;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  font-weight: bold;
+  background-color: #f2f2f2;
+}
+
+.total-amount {
+  margin-top: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  font-weight: bold;
+}
+
+textarea {
+  resize: vertical;
+}
+
+button[type="submit"] {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+p {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+    </style>
 </head>
 
 <body>
@@ -39,7 +103,6 @@
             <h5>Total Amount: <%= totalAmount %></h5>
           </div>
         <% } %>
-
         <form action="/process-payment" method="POST">
             <div class="form-group">
                 <label for="name">Name</label>

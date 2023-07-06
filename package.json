@@ -18,7 +18,8 @@
     "nodemon": "^2.0.22",
     "openai": "^3.3.0",
     "pg": "^8.11.0",
-    "sequelize": "^6.32.1"
+    "sequelize": "^6.32.1",
+    "stripe": "^12.11.0"
   },
   "scripts": {
     "start": "nodemon app.js"

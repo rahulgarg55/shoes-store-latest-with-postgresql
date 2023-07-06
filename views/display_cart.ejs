@@ -37,6 +37,10 @@
                   <div class="card-body">
                     <h5 class="card-title"><%= item.name %></h5>
                     <p class="card-text">Price: $<%= item.price %></p>
+                    <form action="/delete-item" method="POST" style="display: inline;">
+                      <input type="hidden" name="itemId" value="<%= item.id %>">
+                      <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
                   </div>
                 </div>
               </div>

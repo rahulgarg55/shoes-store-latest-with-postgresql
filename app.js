@@ -34,7 +34,7 @@ const Shoe = sequelize.define(
       allowNull: false,
     },
     price: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.FLOAT,
       allowNull: false,
     },
     createdAt: {
@@ -128,6 +128,14 @@ app.delete("/cart/:id", (req, res) => {
 
   res.redirect("/cart");
 });
+app.delete("/delete-item", (req, res) => {
+  const itemId = req.body.itemId;
+  const cartItems = req.session.cartItems || [];
+  const updatedCartItems = cartItems.filter((item) => item.id !== itemId);
+  req.session.cartItems = updatedCartItems;
+  res.sendStatus(200);
+});
+
 
 app.get("/:id/edit", (req, res) => {
   Shoe.findByPk(req.params.id)
