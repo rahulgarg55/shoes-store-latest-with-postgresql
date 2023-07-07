@@ -10,6 +10,7 @@
     <% }) %>
   </div>
   <script>
+    
     function addToCart(shoeId) {
       fetch(`/${shoeId}/add-to-cart`, { method: 'POST' })
         .then(function(response) {
@@ -24,4 +25,45 @@
         });
     }
   </script>
+  <style>
+    #cart-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+  
+    .cart-item {
+      display: flex;
+      align-items: center;
+      width: 300px;
+      border: 1px solid #ddd;
+      padding: 10px;
+    }
+  
+    
+    .cart-item img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      margin-right: 10px;
+    }
+  
+    
+    .cart-item div {
+      flex: 1;
+    }
+  
+    .cart-item h5 {
+      margin: 0;
+      font-size: 16px;
+    }
+  
+    .cart-item p {
+      margin: 5px 0;
+      font-size: 14px;
+      color: #888;
+    }
+  </style>
+  
   

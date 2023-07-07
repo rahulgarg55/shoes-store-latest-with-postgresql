@@ -18,6 +18,37 @@
             text-shadow: #333;
             font-weight: bold;
         }
+        .pagination-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        .pagination {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .page-item {
+            margin: 0 2px;
+        }
+
+        .page-item a {
+            display: inline-block;
+            padding: 5px 10px;
+            text-decoration: none;
+            background-color: #f2f2f2;
+            color: #333;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .page-item.active a {
+            background-color: #007bff;
+            color: #fff;
+        }
 
         .search-bar {
             width: 300px;
@@ -75,6 +106,7 @@
             color:white;
             padding-left:15px;
         }
+        
       
     </style>
 </head>
@@ -133,24 +165,26 @@
         </div>
 
         <% if (pages > 1) { %>
-        <ul class="pagination">
-            <% if (pageNumber > 1) { %>
-            <li class="page-item">
-                <a class="page-link" href="/?page=<%= pageNumber - 1 %>">&laquo;</a>
-            </li>
+            <div class="pagination-container">
+                <ul class="pagination">
+                    <% if (pageNumber > 1) { %>
+                    <li class="page-item">
+                        <a class="page-link" href="/?page=<%= pageNumber - 1 %>">&laquo;</a>
+                    </li>
+                    <% } %>
+                    <% for (let i = 1; i <= pages; i++) { %>
+                    <li class="page-item <%= (i === pageNumber) ? 'active' : '' %>">
+                        <a class="page-link" href="/?page=<%= i %>"><%= i %></a>
+                    </li>
+                    <% } %>
+                    <% if (pageNumber < pages) { %>
+                    <li class="page-item">
+                        <a class="page-link" href="/?page=<%= pageNumber + 1 %>">&raquo;</a>
+                    </li>
+                    <% } %>
+                </ul>
+            </div>
             <% } %>
-            <% for (let i = 1; i <= pages; i++) { %>
-            <li class="page-item <%= (i === pageNumber) ? 'active' : '' %>">
-                <a class="page-link" href="/?page=<%= i %>"><%= i %></a>
-            </li>
-            <% } %>
-            <% if (pageNumber < pages) { %>
-            <li class="page-item">
-                <a class="page-link" href="/?page=<%= pageNumber + 1 %>">&raquo;</a>
-            </li>
-            <% } %>
-        </ul>
-        <% } %>
     </section>
 
     <script>

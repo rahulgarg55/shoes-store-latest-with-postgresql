@@ -8,7 +8,7 @@ paymentRoute.post('/process-payment', async (req, res) => {
 
   try {
     const paymentIntent = await stripe.paymentIntents.confirm(paymentIntentId, {
-      payment_method: paymentIntentId,
+      payment_method: paymentMethodId,
     });
 
     res.render('payment-success', { paymentIntent });
