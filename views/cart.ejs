@@ -14,7 +14,6 @@
       fetch(`/${shoeId}/add-to-cart`, { method: 'POST' })
         .then(function(response) {
           if (response.ok) {
-            // Refresh the cart items on the page
             location.reload();
           } else {
             throw new Error('Failed to add item to cart');

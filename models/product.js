@@ -19,7 +19,7 @@ const shoes = sequelize.define('shoes', {
     allowNull: false,
   },
   price: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.FLOAT,
     allowNull: false,
   },
   createdat: {

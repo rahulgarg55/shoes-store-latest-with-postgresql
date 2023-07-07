@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Payment Success</title>
+  <link rel="stylesheet" type="text/css" href="/styles.css">
+</head>
+<body>
+  <h1>Payment Successful</h1>
+  <p>Payment was successfully processed.</p>
+  <h2>Payment Details:</h2>
+  <ul>
+    <li><strong>Payment ID:</strong> <%= paymentIntent.id %></li>
+    <li><strong>Amount:</strong> <%= paymentIntent.amount %></li>
+    <li><strong>Currency:</strong> <%= paymentIntent.currency.toUpperCase() %></li>
+    <li><strong>Status:</strong> <%= paymentIntent.status %></li>
+  </ul>
+</body>
+</html>

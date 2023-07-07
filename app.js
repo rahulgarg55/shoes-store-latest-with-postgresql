@@ -5,6 +5,7 @@ const { Sequelize, DataTypes } = require("sequelize");
 const emailModule = require("./utils/email");
 const session = require("express-session");
 const crypto = require("crypto");
+const stripe = require('stripe')('sk_test_51Kb3jnSDwXbsOnZOQ4FuUW2Tw44ygW4hAJ11yx57i7Hze0CB5eYsOlcoodwThlZyzAAa3k0BXG41HwRBQ7dw1GYf00bJuew2St');
 
 const app = express();
 const sequelize = new Sequelize("shoesstore", "postgres", "1234", {
@@ -175,14 +176,42 @@ app.delete("/:id/delete", (req, res) => {
     });
 });
 
-app.get("/checkout-page", (req, res) => {
+// app.get("/checkout-page", (req, res) => {
+//   const cartItems = req.session.cartItems || [];
+//   let totalAmount = 0;
+//   cartItems.forEach((item) => {
+//     totalAmount += item.price;
+//   });
+//   res.render("checkout", { cartItems, totalAmount });
+// });
+
+app.get('/checkout-page', (req, res) => {
   const cartItems = req.session.cartItems || [];
   let totalAmount = 0;
   cartItems.forEach((item) => {
     totalAmount += item.price;
   });
-  res.render("checkout", { cartItems, totalAmount });
+
+  res.render('checkout', { cartItems, totalAmount, publicKey: 'sk_test_51Kb3jnSDwXbsOnZOQ4FuUW2Tw44ygW4hAJ11yx57i7Hze0CB5eYsOlcoodwThlZyzAAa3k0BXG41HwRBQ7dw1GYf00bJuew2St'});
 });
+
+app.post('/checkout-page', async (req, res) => {
+  const cartItems = req.session.cartItems || [];
+  const totalAmount = calculateTotalAmount(cartItems);
+
+  try {
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: totalAmount,
+      currency: 'usd',
+    });
+
+    res.render('payment', { clientSecret: paymentIntent.client_secret });
+  } catch (error) {
+    console.error('Error processing payment:', error);
+    res.redirect('/checkout-page');
+  }
+});
+
 app.get("/", (req, res) => {
   const pageNumber = req.query.page || 1;
   const pageSize = 3;
@@ -213,6 +242,8 @@ app.get("/", (req, res) => {
       res.redirect("/");
     });
 });
+const paymentRoute = require('./controller/payment');
+app.use('/', paymentRoute);
 
 const port = process.env.PORT || 3004;
 app.listen(port, () => {
