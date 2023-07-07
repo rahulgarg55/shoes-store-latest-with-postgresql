@@ -1,30 +1,30 @@
 <div id="cart-items">
-    <% cartItems.forEach(function(shoe) { %>
-      <div class="cart-item">
-        <img src="<%= shoe.image %>" alt="<%= shoe.name %>">
-        <div>
-          <h5><%= shoe.name %></h5>
-          <p><%= shoe.price %></p>
-        </div>
+  <% cartItems.forEach(function(shoe) { %>
+    <div class="cart-item">
+      <img src="<%= shoe.image %>" alt="<%= shoe.name %>">
+      <div>
+        <h5><%= shoe.name %></h5>
+        <p><%= shoe.price %></p>
+        <button onclick="removeFromCart('<%= shoe.id %>')" class="btn btn-danger btn-sm">Remove</button>
       </div>
-    <% }) %>
-  </div>
-  <script>
-    
-    function addToCart(shoeId) {
-      fetch(`/${shoeId}/add-to-cart`, { method: 'POST' })
-        .then(function(response) {
-          if (response.ok) {
-            location.reload();
-          } else {
-            throw new Error('Failed to add item to cart');
-          }
-        })
-        .catch(function(error) {
-          console.error('Error adding item to cart:', error);
-        });
-    }
-  </script>
+    </div>
+  <% }) %>
+</div>
+<script>
+  function removeFromCart(shoeId) {
+    fetch(`/${shoeId}/remove-from-cart`, { method: 'POST' })
+      .then(function(response) {
+        if (response.ok) {
+          location.reload();
+        } else {
+          throw new Error('Failed to remove item from cart');
+        }
+      })
+      .catch(function(error) {
+        console.error('Error removing item from cart:', error);
+      });
+  }
+</script>
   <style>
     #cart-items {
       display: flex;

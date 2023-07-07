@@ -175,6 +175,30 @@ app.delete("/:id/delete", (req, res) => {
       res.redirect("/");
     });
 });
+app.post("/:shoeId/remove-from-cart", (req, res) => {
+  const shoeId = req.params.shoeId;
+  const cartItems = req.session.cartItems || [];
+
+  const itemIndex = cartItems.findIndex((item) => item.id === shoeId);
+
+  if (itemIndex !== -1) {
+    cartItems.splice(itemIndex, 1);
+    req.session.cartItems = cartItems;
+    res.sendStatus(200);
+  } else {
+    res.sendStatus(404); 
+  }
+});
+
+app.post("/delete-item", (req, res) => {
+  const itemId = req.body.itemId;
+  const cartItems = req.session.cartItems || [];
+  const updatedCartItems = cartItems.filter((item) => item.id !== itemId);
+  req.session.cartItems = updatedCartItems;
+  res.redirect("/cart");
+});
+
+
 
 // app.get("/checkout-page", (req, res) => {
 //   const cartItems = req.session.cartItems || [];
@@ -242,6 +266,8 @@ app.get("/", (req, res) => {
       res.redirect("/");
     });
 });
+
+
 const paymentRoute = require('./controller/payment');
 app.use('/', paymentRoute);
 
@@ -249,3 +275,4 @@ const port = process.env.PORT || 3004;
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);
 });
+

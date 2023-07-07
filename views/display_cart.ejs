@@ -19,11 +19,16 @@
     .container {
       margin-top: 50px;
     }
+
+    .cart-heading {
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>Cart</h2>
+    <h2 class="cart-heading">Added to Cart Products</h2>
     <% if (cartItems.length > 0) { %>
       <div class="row">
         <% cartItems.forEach(function(item) { %>
