@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <style>
+        .container {
+            margin-top: 50px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .row {
+            display: flex;
+            align-items: center;
+        }
+
+        .col-md-6 {
+            margin-top: 20px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        h3 {
+            margin-top: 0;
+        }
+
+        p {
+            margin-bottom: 10px;
+        }
+
+        .btn-primary {
+            margin-right: 10px;
+        }
+
+        .btn-secondary {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Product Details</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <img src="<%= shoe.image %>" class="img-fluid" alt="Shoe Image">
+            </div>
+            <div class="col-md-6">
+                <h3><%= shoe.name %></h3>
+                <p>Price: $<%= shoe.price %></p>
+                <p>Description: <%= shoe.description %></p>
+                <p>Created At: <%= shoe.createdAt.toDateString() %></p>
+                <p>Updated At: <%= shoe.updatedAt.toDateString() %></p>
+                <form action="/<%= shoe.id %>/add-to-cart" method="POST">
+                    <button class="btn btn-primary">Add to Cart</button>
+                </form>
+                <br>
+                <a href="/" class="btn btn-secondary">Back to Home</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add event listener for the "Add to Cart" button
+        document.querySelector('.btn-primary').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent the form from submitting
+
+            // Perform any necessary logic here
+            // For example, you can use JavaScript to add the item to the cart asynchronously
+            // You can use AJAX or fetch API to send a request to the server and update the cart
+
+            // After adding the item to the cart, you can redirect the user to the cart page
+            window.location.href = '/cart';
+        });
+    </script>
+</body>
+
+</html>

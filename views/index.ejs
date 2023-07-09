@@ -23,9 +23,12 @@
             justify-content: flex-end;
             margin-top: 20px;
         }
-        .card-body{
-            max-height:200px;
-        }
+        .card {
+        height: 400px; /* Added fixed height for the card container */
+        overflow:auto;
+        max-width: 400px;
+    }
+
 
         .pagination {
             display: flex;
@@ -141,54 +144,55 @@
     <hr>
     <section class="show">
         <div class="row">
-            <% shoes.forEach(function(product){ %>
+          <% shoes.forEach(function(product){ %>
             <div class="col-md-4 mb-4">
-                <div class="card">
-                    <a href="/<%= product.id %>/edit">
-                        <img src="<%= product.image %>" class="card-img-top" alt="Shoes Image">
-                    </a>
-                    <div class="card-body">
-                        <h5 class="card-title"><%= product.name %></h5>
-                        <p class="card-text"><%= product.price %></p>
-                        <p class="card-text"><%= product.description %></p>
-                        <form action="/<%= product.id %>/add-to-cart" method="POST" style="display: inline;">
-                            <button class="btn btn-primary">Add to Cart</button>
-                        </form>
-                    </div>
-                    <div class="edit-delete-buttons">
-                        <a href="/<%= product.id %>/edit" class="btn btn-primary btn-sm">Edit</a>
-                        <form action="/<%= product.id %>/delete" method="POST" style="display: inline;">
-                          <input type="hidden" name="_method" value="DELETE">
-                          <button class="btn btn-danger btn-sm">Delete</button>
-                        </form>
-                      </div>                      
+              <div class="card">
+                <a href="/<%= product.id %>/details">
+                  <img src="<%= product.image %>" class="card-img-top" alt="Shoes Image">
+                </a>
+                <div class="card-body">
+                  <h5 class="card-title"><%= product.name %></h5>
+                  <p class="card-text"><%= product.price %></p>
+                  <p class="card-text"><%= product.description %></p>
+                  <form action="/<%= product.id %>/add-to-cart" method="POST" style="display: inline;">
+                    <button class="btn btn-primary">Add to Cart</button>
+                  </form>
                 </div>
+                <div class="edit-delete-buttons">
+                  <a href="/<%= product.id %>/edit" class="btn btn-primary btn-sm">Edit</a>
+                  <form action="/<%= product.id %>/delete" method="POST" style="display: inline;">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button class="btn btn-danger btn-sm">Delete</button>
+                  </form>
+                </div>
+              </div>
             </div>
-            <% }) %>
+          <% }) %>
         </div>
-
+      
         <% if (pages > 1) { %>
-            <div class="pagination-container">
-                <ul class="pagination">
-                    <% if (pageNumber > 1) { %>
-                    <li class="page-item">
-                        <a class="page-link" href="/?page=<%= pageNumber - 1 %>">&laquo;</a>
-                    </li>
-                    <% } %>
-                    <% for (let i = 1; i <= pages; i++) { %>
-                    <li class="page-item <%= (i === pageNumber) ? 'active' : '' %>">
-                        <a class="page-link" href="/?page=<%= i %>"><%= i %></a>
-                    </li>
-                    <% } %>
-                    <% if (pageNumber < pages) { %>
-                    <li class="page-item">
-                        <a class="page-link" href="/?page=<%= pageNumber + 1 %>">&raquo;</a>
-                    </li>
-                    <% } %>
-                </ul>
-            </div>
-            <% } %>
-    </section>
+          <div class="pagination-container">
+            <ul class="pagination">
+              <% if (pageNumber > 1) { %>
+                <li class="page-item">
+                  <a class="page-link" href="/?page=<%= pageNumber - 1 %>">&laquo;</a>
+                </li>
+              <% } %>
+              <% for (let i = 1; i <= pages; i++) { %>
+                <li class="page-item <%= (i === pageNumber) ? 'active' : '' %>">
+                  <a class="page-link" href="/?page=<%= i %>"><%= i %></a>
+                </li>
+              <% } %>
+              <% if (pageNumber < pages) { %>
+                <li class="page-item">
+                  <a class="page-link" href="/?page=<%= pageNumber + 1 %>">&raquo;</a>
+                </li>
+              <% } %>
+            </ul>
+          </div>
+        <% } %>
+      </section>
+      
 
     <script>
         document.querySelector('.cart-icon').addEventListener('click', () => {

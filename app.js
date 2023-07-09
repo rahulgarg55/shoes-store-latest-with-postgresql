@@ -197,6 +197,17 @@ app.post("/delete-item", (req, res) => {
   req.session.cartItems = updatedCartItems;
   res.redirect("/cart");
 });
+app.get("/:id/details", (req, res) => {
+  Shoe.findByPk(req.params.id)
+    .then((shoe) => {
+      res.render("details", { shoe: shoe, cartItems: req.session.cartItems || [] });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.redirect("/");
+    });
+});
+
 
 
 
