@@ -23,7 +23,7 @@
             margin-top: 5px;
         }
         .card {
-        height: 700px; /* Added fixed height for the card container */
+        height: 700px;
         overflow:auto;
         max-width: 400px;
     }
@@ -111,8 +111,44 @@
             color:white;
             padding-left:15px;
         }
-        
-      
+        .you-might-like {
+    margin-top: 30px;
+}
+
+.you-might-like .title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.you-might-like .card {
+    height: 700px;
+    overflow: auto;
+    max-width: 400px;
+}
+
+.you-might-like .card .card-img-top {
+    height: 300px;
+    object-fit: cover;
+}
+
+.you-might-like .card .card-body {
+    padding: 15px;
+}
+
+.you-might-like .card .card-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.you-might-like .card .card-text {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.you-might-like .card .btn-primary {
+    margin-top: 10px;
+}
     </style>
 </head>
 
@@ -141,6 +177,7 @@
     <br>
     <br>
     <hr>
+    
     <section class="show">
         <div class="row">
           <% shoes.forEach(function(product){ %>
@@ -192,7 +229,49 @@
         <% } %>
       </section>
       
-
+      <div class="container you-might-like">
+        <h2 class="title">You might also like</h2>
+        <div class="row">
+            <% const youMightLike = [
+            {
+                id: 1,
+                name: "Product 1",
+                image: "path/to/product1.jpg",
+                price: "$19.99",
+                description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+            },
+            {
+                id: 2,
+                name: "Product 2",
+                image: "path/to/product2.jpg",
+                price: "$24.99",
+                description: "Ut enim ad minim veniam, quis nostrud exercitation ullamco."
+            },
+            ]; %>
+            <% if (youMightLike && youMightLike.length) { %>
+            <% youMightLike.forEach(function(product){ %>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <a href="/<%= product.id %>/details">
+                        <img src="<%= product.image %>" class="card-img-top" alt="Shoes Image">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title"><%= product.name %></h5>
+                        <p class="card-text"><%= product.price %></p>
+                        <p class="card-text"><%= product.description %></p>
+                        <form action="/<%= product.id %>/add-to-cart" method="POST" style="display: inline;">
+                            <button class="btn btn-primary">Add to Cart</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        <% }) %>
+    <% } else { %>
+        <p>No products found.</p>
+    <% } %>
+</div>
+</div>
+    res.render('index',)
     <script>
         document.querySelector('.cart-icon').addEventListener('click', () => {
             window.location.href = '/cart';  //event listener concept

@@ -197,6 +197,7 @@ app.post("/delete-item", (req, res) => {
   req.session.cartItems = updatedCartItems;
   res.redirect("/cart");
 });
+
 app.get("/:id/details", (req, res) => {
   Shoe.findByPk(req.params.id)
     .then((shoe) => {
@@ -208,26 +209,46 @@ app.get("/:id/details", (req, res) => {
     });
 });
 
-
-
-
-// app.get("/checkout-page", (req, res) => {
-//   const cartItems = req.session.cartItems || [];
-//   let totalAmount = 0;
-//   cartItems.forEach((item) => {
-//     totalAmount += item.price;
-//   });
-//   res.render("checkout", { cartItems, totalAmount });
-// });
+const youMightLike = [
+  {
+    id: 1,
+    name: "Product 1",
+    image: "path/to/product1.jpg",
+    price: "$19.99",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+  },
+  {
+    id: 2,
+    name: "Product 2",
+    image: "path/to/product2.jpg",
+    price: "$24.99",
+    description: "Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
+  },
+  {
+    id: 3,
+    name: "Product 3",
+    image: "path/to/product2.jpg",
+    price: "$24.99",
+    description: "Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
+  },
+  {
+    id: 4,
+    name: "Product 4",
+    image: "path/to/product2.jpg",
+    price: "$24.99",
+    description: "Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
+  },
+  
+];
 
 app.get('/checkout-page', (req, res) => {
   const cartItems = req.session.cartItems || [];
-  let totalAmount = 0;
+  let totalAmount = 0.0; //float type
   cartItems.forEach((item) => {
-    totalAmount += item.price;
+    totalAmount += parseFloat(item.price.replace("$","")) ;
   });
 
-  res.render('checkout', { cartItems, totalAmount, publicKey: 'sk_test_51Kb3jnSDwXbsOnZOQ4FuUW2Tw44ygW4hAJ11yx57i7Hze0CB5eYsOlcoodwThlZyzAAa3k0BXG41HwRBQ7dw1GYf00bJuew2St'});
+  res.render('checkout', { cartItems, totalAmount, publicKey: 'sk_test_51Kb3jnSDwXbsOnZOQ4FuUW2Tw44ygW4hAJ11yx57i7Hze0CB5eYsOlcoodwThlZyzAAa3k0BXG41HwRBQ7dw1GYf00bJuew2St', youMightLike });
 });
 
 app.post('/checkout-page', async (req, res) => {
@@ -240,7 +261,7 @@ app.post('/checkout-page', async (req, res) => {
       currency: 'usd',
     });
 
-    res.render('payment', { clientSecret: paymentIntent.client_secret });
+    res.render('payment', { clientSecret: paymentIntent.client_secret, youMightLike });
   } catch (error) {
     console.error('Error processing payment:', error);
     res.redirect('/checkout-page');
@@ -270,6 +291,7 @@ app.get("/", (req, res) => {
         remainingItems,
         pageNumber,
         cartItems: req.session.cartItems || [],
+        youMightLike: youMightLike,
       });
     })
     .catch((err) => {
@@ -286,4 +308,3 @@ const port = process.env.PORT || 3004;
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);
 });
-
