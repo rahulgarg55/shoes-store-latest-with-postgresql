@@ -206,7 +206,7 @@
           <% }) %>
         </div>
       
-        <% if (pages > 1) { %>
+        <!-- <% if (pages > 1) { %>
           <div class="pagination-container">
             <ul class="pagination">
               <% if (pageNumber > 1) { %>
@@ -226,8 +226,8 @@
               <% } %>
             </ul>
           </div>
-        <% } %>
-      </section>
+        <% } %> -->
+      <!-- </section> -->
       
       <div class="container you-might-like">
         <h2 class="title">You might also like</h2>
@@ -243,6 +243,13 @@
             {
                 id: 2,
                 name: "Product 2",
+                image: "path/to/product2.jpg",
+                price: "$24.99",
+                description: "Ut enim ad minim veniam, quis nostrud exercitation ullamco."
+            },
+            {
+                id: 3,
+                name: "Product 3",
                 image: "path/to/product2.jpg",
                 price: "$24.99",
                 description: "Ut enim ad minim veniam, quis nostrud exercitation ullamco."
@@ -271,7 +278,27 @@
     <% } %>
 </div>
 </div>
-    res.render('index',)
+<section class="pagination-container">
+    <ul class="pagination">
+        <% if (pageNumber > 1) { %>
+        <li class="page-item">
+            <a class="page-link" href="/?page=<%= pageNumber - 1 %>">&laquo;</a>
+        </li>
+        <% } %>
+        <% for (let i = 1; i <= pages; i++) { %>
+        <li class="page-item <%= (i === pageNumber) ? 'active' : '' %>">
+            <a class="page-link" href="/?page=<%= i %>"><%= i %></a>
+        </li>
+        <% } %>
+        <% if (pageNumber < pages) { %>
+        <li class="page-item">
+            <a class="page-link" href="/?page=<%= pageNumber + 1 %>">&raquo;</a>
+        </li>
+        <% } %>
+    </ul>
+</section>
+
+    <!-- res.render('index',) -->
     <script>
         document.querySelector('.cart-icon').addEventListener('click', () => {
             window.location.href = '/cart';  //event listener concept
