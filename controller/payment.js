@@ -6,7 +6,6 @@ const stripePublicKey = 'pk_test_51Kb3jnSDwXbsOnZO1uIwG9W5McH3DNVvee38MdLtJiGu2y
 paymentRoute.post('/process-payment', async (req, res) => {
   const paymentMethodId = req.body.paymentMethodId;
   const paymentIntentId = req.body.paymentIntentId;
-
   try {
     const paymentIntent = await stripe.paymentIntents.confirm(paymentIntentId, {
       payment_method: paymentMethodId,

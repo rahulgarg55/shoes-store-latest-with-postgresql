@@ -71,15 +71,12 @@
     </div>
 
     <script>
-        // Add event listener for the "Add to Cart" button
         document.querySelector('.btn-primary').addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent the form from submitting
+            event.preventDefault(); 
 
-            // Perform any necessary logic here
-            // For example, you can use JavaScript to add the item to the cart asynchronously
-            // You can use AJAX or fetch API to send a request to the server and update the cart
+          
 
-            // After adding the item to the cart, you can redirect the user to the cart page
+            // After adding the item to the cart,redirecting the user to the cart page
             window.location.href = '/cart';
         });
     </script>
