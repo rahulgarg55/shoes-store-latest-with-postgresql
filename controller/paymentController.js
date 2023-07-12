@@ -12,7 +12,7 @@ const renderBuyPage = async(req,res)=>{
     try {
         
         res.render('buy', {
-            key: STRIPE_PUBLISHABLE_KEY,
+            key: pk_test_51Kb3jnSDwXbsOnZO1uIwG9W5McH3DNVvee38MdLtJiGu2yAlcsbGnMd9pOckIN9dcwsQOPnArC6XnBPcEHCwVizj00EqZMqZl2,
             amount:25
          })
 
@@ -29,12 +29,12 @@ const payment = async(req,res)=>{
     stripe.customers.create({
         email: req.body.stripeEmail,
         source: req.body.stripeToken,
-        name: 'Sandeep Sharma',
+        name: 'Rahul Garg',
         address: {
-            line1: '115, Vikas Nagar',
-            postal_code: '281001',
-            city: 'Mathura',
-            state: 'Uttar Pradesh',
+            line1: '10, Peer Colony',
+            postal_code: '147105',
+            city: 'patiala',
+            state: 'Punjab',
             country: 'India',
         }
     })
