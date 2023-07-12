@@ -7,8 +7,8 @@ const session = require("express-session");
 const crypto = require("crypto");
 const stripe = require('stripe')('sk_test_51Kb3jnSDwXbsOnZOQ4FuUW2Tw44ygW4hAJ11yx57i7Hze0CB5eYsOlcoodwThlZyzAAa3k0BXG41HwRBQ7dw1GYf00bJuew2St');
 const app = express();
-const paymentRoute = require('./views/payment-process');
-app.use('/',paymentRoute);
+// const paymentRoute = require('./views/payment-process');
+// app.use('/',paymentRoute);
 const sequelize = new Sequelize("shoesstore", "postgres", "1234", {
   host: "localhost",
   port: 5432,
@@ -173,11 +173,9 @@ app.delete("/:id/delete", (req, res) => {
     });
 });
 app.post("/:id/remove-from-cart", (req, res) => {
-  const shoeId = req.params.shoeId;
+  const shoeId = req.params.id;
   const cartItems = req.session.cartItems || [];
-
   const itemIndex = cartItems.findIndex((item) => item.id === shoeId);
-
   if (itemIndex !== -1) {
     cartItems.splice(itemIndex, 1);
     req.session.cartItems = cartItems;
@@ -187,12 +185,19 @@ app.post("/:id/remove-from-cart", (req, res) => {
   }
 });
 
+// app.post("/delete-item", (req, res) => {
+//   const itemId = req.body.itemId;
+//   const cartItems = req.session.cartItems || [];
+//   const updatedCartItems = cartItems.filter((item) => item.id !== itemId);
+//   req.session.cartItems = updatedCartItems;
+//   res.redirect("/");
+// });
 app.post("/delete-item", (req, res) => {
   const itemId = req.body.itemId;
   const cartItems = req.session.cartItems || [];
   const updatedCartItems = cartItems.filter((item) => item.id !== itemId);
   req.session.cartItems = updatedCartItems;
-  res.redirect("/");
+  res.redirect("/cart");
 });
 
 app.get("/:id/details", (req, res) => {
@@ -246,7 +251,13 @@ app.get('/checkout-page', (req, res) => {
 
   res.render('checkout', { cartItems, totalAmount, publicKey: 'sk_test_51Kb3jnSDwXbsOnZOQ4FuUW2Tw44ygW4hAJ11yx57i7Hze0CB5eYsOlcoodwThlZyzAAa3k0BXG41HwRBQ7dw1GYf00bJuew2St', youMightLike });
 });
-
+function calculateTotalAmount(cartItems) {
+  let totalAmount = 0.0;
+  cartItems.forEach((item) => {
+    totalAmount += parseFloat(item.price.replace("$", ""));
+  });
+  return totalAmount;
+}
 app.post('/checkout-page', async (req, res) => {
   const cartItems = req.session.cartItems || [];
   const totalAmount = calculateTotalAmount(cartItems);
@@ -257,7 +268,7 @@ app.post('/checkout-page', async (req, res) => {
       currency: 'usd',
     });
 
-    res.render('payment', { clientSecret: paymentIntent.client_secret, youMightLike });
+    res.redirect('/payment-process'); // Redirect to the payment route
   } catch (error) {
     console.error('Error processing payment:', error);
     res.redirect('/checkout-page');

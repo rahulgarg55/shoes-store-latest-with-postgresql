@@ -4,7 +4,7 @@
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cart</title>
+  <title>Checkout</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
   <style>
     .card {
@@ -21,7 +21,7 @@
       margin-top: 50px;
     }
 
-    .cart-heading {
+    .checkout-heading {
       margin-bottom: 20px;
       font-weight: bold;
     }
@@ -29,7 +29,7 @@
 </head>
 <body>
   <div class="container">
-    <h2 class="cart-heading">Added to Cart Products</h2>
+    <h2 class="checkout-heading">Checkout</h2>
     <% if (cartItems.length > 0) { %>
       <div class="row">
         <% cartItems.forEach(function(item) { %>
@@ -43,10 +43,6 @@
                   <div class="card-body">
                     <h5 class="card-title"><%= item.name %></h5>
                     <p class="card-text">Price: $<%= item.price %></p>
-                    <form action="/delete-item" method="POST" style="display: inline;">
-                      <input type="hidden" name="itemId" value="<%= item.id %>">
-                      <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                    </form>
                   </div>
                 </div>
               </div>
@@ -57,24 +53,13 @@
     <% } else { %>
       <p>No items in the cart.</p>
     <% } %>
+    <form action="/checkout-page" method="POST" style="display: inline;">
+      <button type="submit" class="btn btn-primary">Submit Payment</button>   
+    </form>
     <a href="/" class="btn btn-primary">Back to Store</a>
-    <button onclick="redirectToHomepage()" class="btn btn-primary">Go to Homepage</button> <!-- Added button -->
+    <button onclick="redirectToHomepage()" class="btn btn-primary">Go to Homepage</button>
   </div>
   <script>
-    function removeFromCart(shoeId) {
-      axios.post(`/${shoeId}/remove-from-cart`)
-        .then(function(response) {
-          if (response.status === 200) {
-            location.reload();
-          } else {
-            throw new Error('Failed to remove item from cart');
-          }
-        })
-        .catch(function(error) {
-          console.error('Error removing item from cart:', error);
-        });
-    }
-
     function redirectToHomepage() {
       window.location.href = "/"; // Redirects to the homepage
     }
