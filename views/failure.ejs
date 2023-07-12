@@ -1,0 +1,1 @@
+<h1>Your Payment has been failed!</h1>

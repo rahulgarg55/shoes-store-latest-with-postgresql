@@ -6,8 +6,10 @@ const emailModule = require("./utils/email");
 const session = require("express-session");
 const crypto = require("crypto");
 const stripe = require('stripe')('sk_test_51Kb3jnSDwXbsOnZOQ4FuUW2Tw44ygW4hAJ11yx57i7Hze0CB5eYsOlcoodwThlZyzAAa3k0BXG41HwRBQ7dw1GYf00bJuew2St');
-
+// var http = require('http').Server(app);
 const app = express();
+const paymentRoute = require('./views/payment-process');
+app.use('/',paymentRoute);
 const sequelize = new Sequelize("shoesstore", "postgres", "1234", {
   host: "localhost",
   port: 5432,
@@ -175,7 +177,7 @@ app.delete("/:id/delete", (req, res) => {
       res.redirect("/");
     });
 });
-app.post("/:shoeId/remove-from-cart", (req, res) => {
+app.post("/:id/remove-from-cart", (req, res) => {
   const shoeId = req.params.shoeId;
   const cartItems = req.session.cartItems || [];
 
@@ -300,9 +302,25 @@ app.get("/", (req, res) => {
     });
 });
 
+app.post("/youmightlike/:id/add-to-cart", (req, res) => {
+  const shoeId = req.params.id;
+  Shoe.findByPk(shoeId)
+    .then((shoe) => {
+      if (shoe) {
+        const cartItems = req.session.cartItems || [];
+        cartItems.push(shoe);
+        req.session.cartItems = cartItems;
+      }
+      res.redirect("/cart"); // Redirect to the cart page
+    })
+    .catch((err) => {
+      console.log(err);
+      res.sendStatus(500);
+    });
+});
 
-const paymentRoute = require('./controller/payment');
-app.use('/', paymentRoute);
+// const paymentRoute = require('./controller/paymentController');
+// app.use('/', paymentRoute);
 
 const port = process.env.PORT || 3004;
 app.listen(port, () => {

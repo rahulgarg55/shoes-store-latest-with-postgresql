@@ -25,6 +25,19 @@
         console.error('Error removing item from cart:', error);
       });
   }
+  function addToCart(shoeId) {
+    fetch(`/${shoeId}/add-to-cart`, { method: 'POST' })
+      .then(function(response) {
+        if (response.ok) {
+          location.reload();
+        } else {
+          throw new Error('Failed to add item to cart');
+        }
+      })
+      .catch(function(error) {
+        console.error('Error adding item to cart:', error);
+      });
+  }
 </script>
 <style>
   #cart-items {
