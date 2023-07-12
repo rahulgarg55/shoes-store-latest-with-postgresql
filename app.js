@@ -6,7 +6,6 @@ const emailModule = require("./utils/email");
 const session = require("express-session");
 const crypto = require("crypto");
 const stripe = require('stripe')('sk_test_51Kb3jnSDwXbsOnZOQ4FuUW2Tw44ygW4hAJ11yx57i7Hze0CB5eYsOlcoodwThlZyzAAa3k0BXG41HwRBQ7dw1GYf00bJuew2St');
-// var http = require('http').Server(app);
 const app = express();
 const paymentRoute = require('./views/payment-process');
 app.use('/',paymentRoute);
@@ -15,7 +14,6 @@ const sequelize = new Sequelize("shoesstore", "postgres", "1234", {
   port: 5432,
   dialect: "postgres",
 });
-
 sequelize
   .authenticate()
   .then(() => {
@@ -62,7 +60,6 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 const secretKey = crypto.randomBytes(32).toString("hex");
-
 app.use(
   session({
     secret: secretKey,
@@ -123,13 +120,11 @@ app.delete("/cart/:id", (req, res) => {
   const shoeId = req.params.id;
   const cartItems = req.session.cartItems || [];
   const index = cartItems.findIndex((shoe) => shoe.id === shoeId);
-
   if (index !== -1) {
     cartItems.splice(index, 1);
     req.session.cartItems = cartItems;
   }
-
-  res.redirect("/cart");
+res.redirect("/cart");
 });
 app.delete("/delete-item", (req, res) => {
   const itemId = req.body.itemId;
@@ -197,7 +192,7 @@ app.post("/delete-item", (req, res) => {
   const cartItems = req.session.cartItems || [];
   const updatedCartItems = cartItems.filter((item) => item.id !== itemId);
   req.session.cartItems = updatedCartItems;
-  res.redirect("/cart");
+  res.redirect("/");
 });
 
 app.get("/:id/details", (req, res) => {
@@ -217,7 +212,7 @@ const youMightLike = [
     name: "Product 1",
     image: "path/to/product1.jpg",
     price: "$19.99",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    description: "bestest shoes",
   },
   {
     id: 2,
@@ -239,8 +234,7 @@ const youMightLike = [
     image: "path/to/product2.jpg",
     price: "$24.99",
     description: "Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
-  },
-  
+  }, 
 ];
 
 app.get('/checkout-page', (req, res) => {
