@@ -134,7 +134,6 @@ app.delete("/delete-item", (req, res) => {
   res.sendStatus(200);
 });
 
-
 app.get("/:id/edit", (req, res) => {
   Shoe.findByPk(req.params.id)
     .then((shoe) => {
