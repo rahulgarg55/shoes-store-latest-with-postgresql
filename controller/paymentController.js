@@ -13,7 +13,7 @@ const renderBuyPage = async(req,res)=>{
         
         res.render('buy', {
             key: pk_test_51Kb3jnSDwXbsOnZO1uIwG9W5McH3DNVvee38MdLtJiGu2yAlcsbGnMd9pOckIN9dcwsQOPnArC6XnBPcEHCwVizj00EqZMqZl2,
-            amount:25
+            amount:$25
          })
 
     } catch (error) {

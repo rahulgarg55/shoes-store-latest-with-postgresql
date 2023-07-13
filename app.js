@@ -278,7 +278,7 @@ app.post('/checkout-page', async (req, res) => {
       currency: 'usd',
     });
 
-    res.redirect('/payment-process'); // Redirect to the payment route
+    res.redirect('/payment'); // Redirect to the payment route
   } catch (error) {
     console.error('Error processing payment:', error);
     res.redirect('/checkout-page');
