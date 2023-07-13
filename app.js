@@ -240,16 +240,6 @@ const youMightLike = [
     description: "Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
   }, 
 ];
-
-app.get('/checkout-page', (req, res) => {
-  const cartItems = req.session.cartItems || [];
-  let totalAmount = 0.0; //float type
-  cartItems.forEach((item) => {
-    totalAmount += parseFloat(item.price.replace("$","")) ;
-  });
-
-  res.render('checkout', { cartItems, totalAmount, publicKey: 'sk_test_51Kb3jnSDwXbsOnZOQ4FuUW2Tw44ygW4hAJ11yx57i7Hze0CB5eYsOlcoodwThlZyzAAa3k0BXG41HwRBQ7dw1GYf00bJuew2St', youMightLike });
-});
 function calculateTotalAmount(cartItems) {
   let totalAmount = 0.0;
   cartItems.forEach((item) => {
@@ -257,10 +247,31 @@ function calculateTotalAmount(cartItems) {
   });
   return totalAmount;
 }
-app.post('/checkout-page', async (req, res) => {
+// app.get('/checkout-page', (req, res) => {
+//   const cartItems = req.session.cartItems || [];
+//   let totalAmount = 0.0; //float type
+//   cartItems.forEach((item) => {
+//     totalAmount += parseFloat(item.price.replace("$","")) ;
+//   });
+
+//   res.render('checkout', { cartItems, totalAmount, publicKey: 'sk_test_51Kb3jnSDwXbsOnZOQ4FuUW2Tw44ygW4hAJ11yx57i7Hze0CB5eYsOlcoodwThlZyzAAa3k0BXG41HwRBQ7dw1GYf00bJuew2St', youMightLike });
+// });
+app.get('/checkout-page', (req, res) => {
   const cartItems = req.session.cartItems || [];
   const totalAmount = calculateTotalAmount(cartItems);
 
+  res.render('checkout', {
+    cartItems,
+    totalAmount,
+    calculateTotalAmount: calculateTotalAmount, //passed the fucntuon as local variable
+    publicKey: 'sk_test_51Kb3jnSDwXbsOnZOQ4FuUW2Tw44ygW4hAJ11yx57i7Hze0CB5eYsOlcoodwThlZyzAAa3k0BXG41HwRBQ7dw1GYf00bJuew2St',
+    youMightLike
+  });
+});
+
+app.post('/checkout-page', async (req, res) => {
+  const cartItems = req.session.cartItems || [];
+  const totalAmount = calculateTotalAmount(cartItems);
   try {
     const paymentIntent = await stripe.paymentIntents.create({
       amount: totalAmount,
@@ -322,9 +333,6 @@ app.post("/youmightlike/:id/add-to-cart", (req, res) => {
       res.sendStatus(500);
     });
 });
-
-// const paymentRoute = require('./controller/paymentController');
-// app.use('/', paymentRoute);
 
 const port = process.env.PORT || 3004;
 app.listen(port, () => {

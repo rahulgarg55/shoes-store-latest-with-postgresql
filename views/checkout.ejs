@@ -25,6 +25,11 @@
       margin-bottom: 20px;
       font-weight: bold;
     }
+
+    .total-amount {
+      margin-top: 20px;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -50,11 +55,12 @@
           </div>
         <% }) %>
       </div>
+      <p class="total-amount">Total Amount: $<%= calculateTotalAmount(cartItems) %></p> <!-- Added total amount section -->
     <% } else { %>
       <p>No items in the cart.</p>
     <% } %>
     <form action="/checkout-page" method="POST" style="display: inline;">
-      <button type="submit" class="btn btn-primary">Submit Payment</button>   
+      <button type="submit" class="btn btn-primary">Proceed to Buy</button>   
     </form>
     <a href="/" class="btn btn-primary">Back to Store</a>
     <button onclick="redirectToHomepage()" class="btn btn-primary">Go to Homepage</button>
