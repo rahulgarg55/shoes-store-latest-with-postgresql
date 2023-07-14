@@ -7,6 +7,7 @@ const session = require("express-session");
 const crypto = require("crypto");
 const stripe = require('stripe')('sk_test_51Kb3jnSDwXbsOnZOQ4FuUW2Tw44ygW4hAJ11yx57i7Hze0CB5eYsOlcoodwThlZyzAAa3k0BXG41HwRBQ7dw1GYf00bJuew2St');
 const app = express();
+var http=require('http').Server(app);
 // const paymentRoute = require('./views/payment-process');
 // app.use('/',paymentRoute);
 const sequelize = new Sequelize("shoesstore", "postgres", "1234", {
@@ -22,7 +23,6 @@ sequelize
   .catch((error) => {
     console.error("Error connecting to the database", error);
   });
-
 const Shoe = sequelize.define(
   "Shoe",
   {
@@ -191,13 +191,21 @@ app.post("/:id/remove-from-cart", (req, res) => {
 //   req.session.cartItems = updatedCartItems;
 //   res.redirect("/");
 // });
+// app.post("/delete-item", (req, res) => {
+//   const itemId = req.body.itemId;
+//   const cartItems = req.session.cartItems || [];
+//   const updatedCartItems = cartItems.filter((item) => item.id !== itemId);
+//   req.session.cartItems = updatedCartItems;
+//   res.redirect("/cart");
+// });
 app.post("/delete-item", (req, res) => {
   const itemId = req.body.itemId;
   const cartItems = req.session.cartItems || [];
   const updatedCartItems = cartItems.filter((item) => item.id !== itemId);
   req.session.cartItems = updatedCartItems;
-  res.redirect("/cart");
+  res.sendStatus(200);
 });
+
 
 app.get("/:id/details", (req, res) => {
   Shoe.findByPk(req.params.id)
@@ -277,7 +285,6 @@ app.post('/checkout-page', async (req, res) => {
       amount: totalAmount,
       currency: 'usd',
     });
-
     res.redirect('/payment'); // Redirect to the payment route
   } catch (error) {
     console.error('Error processing payment:', error);

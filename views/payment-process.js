@@ -1,18 +1,26 @@
 const express = require('express');
-const payment_route = express();
+const paymentRoute = express();
 const bodyParser = require('body-parser');
-payment_route.use(bodyParser.json());
-payment_route.use(bodyParser.urlencoded({ extended:false }));
+paymentRoute.use(bodyParser.json());
+paymentRoute.use(bodyParser.urlencoded({ extended:false }));
 
 const path = require('path');
 
-payment_route.set('view engine','ejs');
-payment_route.set('views',path.join(__dirname, '../views'));
+paymentRoute.set('view engine','ejs');
+paymentRoute.set('views',path.join(__dirname, '../views'));
 
 const paymentController = require('../controller/paymentController');
 
-payment_route.get('/', paymentController.renderBuyPage);
-payment_route.post('/payment', paymentController.payment);
-payment_route.get('/success', paymentController.success);
-payment_route.get('/failure', paymentController.failure);
-module.exports = payment_route;
+paymentRoute.post('/delete-item', (req, res) => {
+    const itemId = req.body.itemId;
+    const cartItems = req.session.cartItems || [];
+    const updatedCartItems = cartItems.filter((item) => item.id !== itemId);
+    req.session.cartItems = updatedCartItems;
+    res.sendStatus(200);
+});
+
+paymentRoute.get('/', paymentController.renderBuyPage);
+paymentRoute.post('/payment', paymentController.payment);
+paymentRoute.get('/success', paymentController.success);
+paymentRoute.get('/failure', paymentController.failure);
+module.exports = paymentRoute;

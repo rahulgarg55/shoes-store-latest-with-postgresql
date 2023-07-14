@@ -48,6 +48,7 @@
                   <div class="card-body">
                     <h5 class="card-title"><%= item.name %></h5>
                     <p class="card-text">Price: $<%= item.price %></p>
+                    <button onclick="removeItem('<%= item.id %>')" class="btn btn-danger">Remove</button>
                   </div>
                 </div>
               </div>
@@ -59,7 +60,7 @@
     <% } else { %>
       <p>No items in the cart.</p>
     <% } %>
-    <form action="/payment" method="POST" style="display: inline;">
+    <form action="/payment-process" method="POST" style="display: inline;">
       <button type="submit" class="btn btn-primary">Proceed to Buy</button>   
     </form>
     <a href="/" class="btn btn-primary">Back to Store</a>
@@ -67,7 +68,17 @@
   </div>
   <script>
     function redirectToHomepage() {
-      window.location.href = "/"; // Redirects to the homepage
+      window.location.href = "/"; 
+    }
+
+    function removeItem(itemId) {
+      axios.post("/delete-item", { itemId: itemId })
+        .then(function(response) {
+          window.location.reload(); 
+        })
+        .catch(function(error) {
+          console.error(error);
+        });
     }
   </script>
 </body>

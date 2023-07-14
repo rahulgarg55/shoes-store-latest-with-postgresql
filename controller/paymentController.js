@@ -1,8 +1,3 @@
-// const express = require("express");
-// const paymentRoute = express.Router();
-// const stripe = require('stripe')('sk_test_51Kb3jnSDwXbsOnZOQ4FuUW2Tw44ygW4hAJ11yx57i7Hze0CB5eYsOlcoodwThlZyzAAa3k0BXG41HwRBQ7dw1GYf00bJuew2St');
-// const stripePublicKey = 'pk_test_51Kb3jnSDwXbsOnZO1uIwG9W5McH3DNVvee38MdLtJiGu2yAlcsbGnMd9pOckIN9dcwsQOPnArC6XnBPcEHCwVizj00EqZMqZl2';
-
 const { pk_test_51Kb3jnSDwXbsOnZO1uIwG9W5McH3DNVvee38MdLtJiGu2yAlcsbGnMd9pOckIN9dcwsQOPnArC6XnBPcEHCwVizj00EqZMqZl2, sk_test_51Kb3jnSDwXbsOnZOQ4FuUW2Tw44ygW4hAJ11yx57i7Hze0CB5eYsOlcoodwThlZyzAAa3k0BXG41HwRBQ7dw1GYf00bJuew2St } = process.env;
 
 const stripe = require('stripe')(sk_test_51Kb3jnSDwXbsOnZOQ4FuUW2Tw44ygW4hAJ11yx57i7Hze0CB5eYsOlcoodwThlZyzAAa3k0BXG41HwRBQ7dw1GYf00bJuew2St)
@@ -13,7 +8,7 @@ const renderBuyPage = async(req,res)=>{
         
         res.render('buy', {
             key: pk_test_51Kb3jnSDwXbsOnZO1uIwG9W5McH3DNVvee38MdLtJiGu2yAlcsbGnMd9pOckIN9dcwsQOPnArC6XnBPcEHCwVizj00EqZMqZl2,
-            amount:$25
+            amount:25
          })
 
     } catch (error) {
