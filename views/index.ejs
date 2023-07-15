@@ -316,7 +316,7 @@
 </div>
 </div>
 <div class="container">
-    <h2>Chat</h2>
+    <h2>Ask</h2>
     <div class="chat-container">
         <div class="chat-messages" id="chat-messages"></div>
         <form class="chat-form" id="chat-form">
@@ -328,14 +328,12 @@
   <script src="/socket.io/socket.io.js"></script>
   <script>
     const socket = io();
-  
-    // Handle form submission
     document.getElementById("chat-form").addEventListener("submit", (e) => {
       e.preventDefault();
       const messageInput = document.getElementById("message-input");
       const message = messageInput.value;
       if (message.trim()) {
-        socket.emit("chat message", message); // Send the message to the server
+        socket.emit("chat message", message);
         messageInput.value = "";
       }
     });
