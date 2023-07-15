@@ -149,6 +149,43 @@
 .you-might-like .card .btn-primary {
     margin-top: 10px;
 }
+.chat-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            background-color: #f2f2f2;
+            padding: 10px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .chat-messages {
+            margin-bottom: 10px;
+            overflow-y: scroll;
+            max-height: 200px;
+        }
+
+        .chat-form {
+            display: flex;
+            align-items: center;
+        }
+
+        .chat-form input {
+            flex: 1;
+            height: 40px;
+            border: none;
+            padding: 5px;
+            font-size: 18px;
+        }
+
+        .chat-form button {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
     </style>
 </head>
 
@@ -278,6 +315,40 @@
     <% } %>
 </div>
 </div>
+<div class="container">
+    <h2>Chat</h2>
+    <div class="chat-container">
+        <div class="chat-messages" id="chat-messages"></div>
+        <form class="chat-form" id="chat-form">
+            <input type="text" id="message-input" autocomplete="off" placeholder="Type your message...">
+            <button type="submit">Send</button>
+        </form>
+    </div>
+</div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+  
+    // Handle form submission
+    document.getElementById("chat-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const messageInput = document.getElementById("message-input");
+      const message = messageInput.value;
+      if (message.trim()) {
+        socket.emit("chat message", message); // Send the message to the server
+        messageInput.value = "";
+      }
+    });
+  
+    // Receive and display chat messages
+    socket.on("chat message", (message) => {
+      const chatMessages = document.getElementById("chat-messages");
+      const messageElement = document.createElement("p");
+      messageElement.textContent = message;
+      chatMessages.appendChild(messageElement);
+    });
+  </script>
+  
 <section class="pagination-container">
     <ul class="pagination">
         <% if (pageNumber > 1) { %>

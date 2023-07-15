@@ -7,7 +7,10 @@ const session = require("express-session");
 const crypto = require("crypto");
 const stripe = require('stripe')('sk_test_51Kb3jnSDwXbsOnZOQ4FuUW2Tw44ygW4hAJ11yx57i7Hze0CB5eYsOlcoodwThlZyzAAa3k0BXG41HwRBQ7dw1GYf00bJuew2St');
 const app = express();
-var http=require('http').Server(app);
+const socketIO = require("socket.io");
+const http=require('http');
+const server = http.createServer(app);
+const io = socketIO(server);
 // const paymentRoute = require('./views/payment-process');
 // app.use('/',paymentRoute);
 const sequelize = new Sequelize("shoesstore", "postgres", "1234", {
@@ -341,6 +344,20 @@ app.post("/youmightlike/:id/add-to-cart", (req, res) => {
     });
 });
 
+io.on("connection", (socket) => {
+  console.log("A user connected");
+
+  // Receive and broadcast chat messages
+  socket.on("chat message", (message) => {
+    console.log("Received message:", message);
+    io.emit("chat message", message); // Broadcast the message to all connected clients
+  });
+
+  // Handle disconnection
+  socket.on("disconnect", () => {
+    console.log("A user disconnected");
+  });
+});
 const port = process.env.PORT || 3004;
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);
