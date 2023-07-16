@@ -20,7 +20,6 @@ const renderBuyPage = async(req,res)=>{
 const payment = async(req,res)=>{
 
     try {
-
     stripe.customers.create({
         email: req.body.stripeEmail,
         source: req.body.stripeToken,

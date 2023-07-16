@@ -60,13 +60,15 @@
     <% } else { %>
       <p>No items in the cart.</p>
     <% } %>
-    <form action="/payment-process" method="POST" style="display: inline;">
-      <button type="submit" class="btn btn-primary">Proceed to Buy</button>   
-    </form>
+      <button onClick="redirectTocheck()" type="submit" class="btn btn-primary">Proceed to Buy</button>   
+    
     <a href="/" class="btn btn-primary">Back to Store</a>
     <button onclick="redirectToHomepage()" class="btn btn-primary">Go to Homepage</button>
   </div>
   <script>
+     function redirectTocheck() {
+      window.location.href = "/payment"; 
+    }
     function redirectToHomepage() {
       window.location.href = "/"; 
     }

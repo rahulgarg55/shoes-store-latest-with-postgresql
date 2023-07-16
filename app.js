@@ -11,8 +11,8 @@ const socketIO = require("socket.io");
 const http=require('http');
 const server = http.createServer(app);
 const io = socketIO(server);
-// const paymentRoute = require('./views/payment-process');
-// app.use('/',paymentRoute);
+const paymentRoute = require('./views/payment-process');
+app.use('/payment',paymentRoute);
 const sequelize = new Sequelize("shoesstore", "postgres", "1234", {
   host: "localhost",
   port: 5432,
@@ -105,7 +105,7 @@ app.post("/:id/add-to-cart", (req, res) => {
         cartItems.push(shoe);
         req.session.cartItems = cartItems;
       }
-      res.redirect("/cart"); // Redirect to the cart page
+      res.redirect("/cart");
     })
     .catch((err) => {
       console.log(err);
@@ -129,24 +129,24 @@ app.delete("/cart/:id", (req, res) => {
   }
 res.redirect("/cart");
 });
-app.delete("/delete-item", (req, res) => {
-  const itemId = req.body.itemId;
-  const cartItems = req.session.cartItems || [];
-  const updatedCartItems = cartItems.filter((item) => item.id !== itemId);
-  req.session.cartItems = updatedCartItems;
-  res.sendStatus(200);
-});
+// app.delete("/delete-item", (req, res) => {
+//   const itemId = req.body.itemId;
+//   const cartItems = req.session.cartItems || [];
+//   const updatedCartItems = cartItems.filter((item) => item.id !== itemId);
+//   req.session.cartItems = updatedCartItems;
+//   res.sendStatus(200);
+// });
 
-app.get("/:id/edit", (req, res) => {
-  Shoe.findByPk(req.params.id)
-    .then((shoe) => {
-      res.render("edit", { shoe: shoe });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.redirect("/");
-    });
-});
+// app.get("/:id/edit", (req, res) => {
+//   Shoe.findByPk(req.params.id)
+//     .then((shoe) => {
+//       res.render("edit", { shoe: shoe });
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//       res.redirect("/");
+//     });
+// });
 
 app.put("/:id/edit", (req, res) => {
   Shoe.update(req.body, {
