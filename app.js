@@ -7,12 +7,17 @@ const session = require("express-session");
 const crypto = require("crypto");
 const stripe = require('stripe')('sk_test_51Kb3jnSDwXbsOnZOQ4FuUW2Tw44ygW4hAJ11yx57i7Hze0CB5eYsOlcoodwThlZyzAAa3k0BXG41HwRBQ7dw1GYf00bJuew2St');
 const app = express();
-const socketIO = require("socket.io");
-const http=require('http');
+const socketIO = require("socket.io"); //sockets
+const http=require('http');  
 const server = http.createServer(app);
 const io = socketIO(server);
+
 const paymentRoute = require('./views/payment-process');
 app.use('/payment',paymentRoute);
+
+// const authRoutes = require("./controller/authRoutes");
+// app.use("/auth",authRoutes);
+
 const sequelize = new Sequelize("shoesstore", "postgres", "1234", {
   host: "localhost",
   port: 5432,
@@ -58,6 +63,27 @@ const Shoe = sequelize.define(
     tableName: "shoes",
   }
 );
+const Cart = sequelize.define("Cart", {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  shoeId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+});
+
+//relationship betweem shoes and cart
+///////////one to manyyyyyy relationship
+Shoe.hasMany(Cart, {
+  foreignKey: "shoeId",
+});
+Cart.belongsTo(Shoe, {
+  foreignKey: "shoeId",
+});
+
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -118,17 +144,18 @@ app.get("/cart", (req, res) => {
   res.render("cart", { cartItems: req.session.cartItems || [] });
   // res.redirect("/");
 });
-
 app.delete("/cart/:id", (req, res) => {
   const shoeId = req.params.id;
   const cartItems = req.session.cartItems || [];
-  const index = cartItems.findIndex((shoe) => shoe.id === shoeId);
+  const index = cartItems.findIndex((shoe) => shoe.id === parseInt(shoeId));
   if (index !== -1) {
     cartItems.splice(index, 1);
     req.session.cartItems = cartItems;
   }
-res.redirect("/cart");
+  res.redirect("/cart");
 });
+
+
 // app.delete("/delete-item", (req, res) => {
 //   const itemId = req.body.itemId;
 //   const cartItems = req.session.cartItems || [];
@@ -187,27 +214,14 @@ app.post("/:id/remove-from-cart", (req, res) => {
   }
 });
 
-// app.post("/delete-item", (req, res) => {
-//   const itemId = req.body.itemId;
-//   const cartItems = req.session.cartItems || [];
-//   const updatedCartItems = cartItems.filter((item) => item.id !== itemId);
-//   req.session.cartItems = updatedCartItems;
-//   res.redirect("/");
-// });
-// app.post("/delete-item", (req, res) => {
-//   const itemId = req.body.itemId;
-//   const cartItems = req.session.cartItems || [];
-//   const updatedCartItems = cartItems.filter((item) => item.id !== itemId);
-//   req.session.cartItems = updatedCartItems;
-//   res.redirect("/cart");
-// });
 app.post("/delete-item", (req, res) => {
   const itemId = req.body.itemId;
   const cartItems = req.session.cartItems || [];
   const updatedCartItems = cartItems.filter((item) => item.id !== itemId);
   req.session.cartItems = updatedCartItems;
-  res.sendStatus(200);
+  res.redirect("/cart");
 });
+
 
 
 app.get("/:id/details", (req, res) => {
@@ -343,6 +357,8 @@ app.post("/youmightlike/:id/add-to-cart", (req, res) => {
       res.sendStatus(500);
     });
 });
+// const authController = require("./controller/authController");
+// app.use("/auth", authController);
 
 io.on("connection", (socket) => {
   console.log("A user connected");

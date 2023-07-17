@@ -8,7 +8,7 @@ const renderBuyPage = async(req,res)=>{
         
         res.render('buy', {
             key: pk_test_51Kb3jnSDwXbsOnZO1uIwG9W5McH3DNVvee38MdLtJiGu2yAlcsbGnMd9pOckIN9dcwsQOPnArC6XnBPcEHCwVizj00EqZMqZl2,
-            amount:25
+            amount:999
          })
 
     } catch (error) {
@@ -25,9 +25,9 @@ const payment = async(req,res)=>{
         source: req.body.stripeToken,
         name: 'Rahul Garg',
         address: {
-            line1: '10, Peer Colony',
+            line1: 'Airport Road, Sec 66-A',
             postal_code: '147105',
-            city: 'patiala',
+            city: 'Mohali',
             state: 'Punjab',
             country: 'India',
         }
